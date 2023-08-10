@@ -1,0 +1,90 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "yapi-output",
+    "patterns": [
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#strings"
+        }
+    ],
+    "repository": {
+        "keywords": {
+            "patterns": [
+                {
+                    "match": "(\\[.*\\]):[\\s]?(.*)",
+                    "captures": {
+                        "1": {
+                            "name": "token.info-token"
+                        },
+                        "2": {
+                            "name": "support.constant.yapi-output",
+                            "patterns": [
+                                {
+                                    "match": "(未完成)|(已完成)",
+                                    "captures": {
+                                        "1": {
+                                            "name": "token.error-token.yapi-output"
+                                        },
+                                        "2": {
+                                            "name": "markup.heading.yapi-output"
+                                        }
+                                    }
+                                },
+                                {
+                                    "match": "[0-9]+-[0-9]+-[0-9]+[\\s]+[0-9]+:[0-9]+:[0-9]+",
+                                    "name": "token.debug-token.yapi-output"
+                                },
+                                {
+                                    "match": "GET|POST|DELETE|PUT",
+                                    "name": "constant.numeric.yapi-output"
+                                },
+                                {
+                                    "match": "[/][/A-Za-z0-9\\-]+",
+                                    "name": "entity.name.type.yapi-output"
+                                },
+                                {
+                                    "match": "(http|s)://[/A-Za-z0-9\\-\\.\\:]+",
+                                    "name": "meta.structure.dictionary.json string.quoted.double.json.yapi-output"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "match": ">>>(.*)",
+                    "name": "token.info-token.yapi-output"
+                },
+                {
+                    "match": "---(.*)---",
+                    "name": "token.debug-token.yapi-output"
+                },
+                {
+                    "match": "\\/\\*(.*)\\*\\/",
+                    "name": "comment.yapi-output"
+                }
+            ]
+        },
+        "strings": {
+            "name": "string.quoted.double.yapi-output",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                {
+                    "name": "constant.character.escape.yapi-output",
+                    "match": "\\\\."
+                },
+                {
+                    "name": "token.info-token.yapi-output",
+                    "match": "<([a-zA-Z|])+>"
+                },
+                {
+                    "name": "storage.yapi-output",
+                    "match": "<必传>"
+                }
+            ]
+        }
+    },
+    "scopeName": "source.yapi-output"
+}

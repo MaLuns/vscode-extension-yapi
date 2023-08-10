@@ -1,0 +1,15 @@
+
+<!DOCTYPE html> 
+html(lang="en")
+    head
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <style>#{style}</style>
+    body 
+        div.tips 注： 绿色代表新增内容，红色代表删除内容
+        div.content
+            each val in dataList
+                h3!= val.title
+                div!= val.content
+
+

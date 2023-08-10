@@ -1,0 +1,351 @@
+{
+  "name": "yapi-box",
+  "displayName": "Yapi",
+  "publisher": "mal",
+  "author": {
+    "name": "白云苍狗"
+  },
+  "description": "Yapi 工具箱",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.73.1"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "icon": "assets/icon128x128.png",
+  "contributes": {
+    "configuration": {
+      "title": "Yapx box",
+      "properties": {
+        "yapi.baseurl": {
+          "type": "string",
+          "default": "",
+          "description": "YAPI 服务地址",
+          "order": 0
+        },
+        "yapi.email": {
+          "type": "string",
+          "default": "",
+          "description": "YAPI 用户邮箱",
+          "order": 0
+        },
+        "yapi.password": {
+          "type": "string",
+          "default": "",
+          "description": "YAPI 用户密码",
+          "order": 0
+        },
+        "yapi.showCat": {
+          "type": "boolean",
+          "default": false,
+          "description": "YAPI 接口显示分类",
+          "order": 0
+        },
+        "yapi.mock.isSaveLocal": {
+          "type": "boolean",
+          "default": false,
+          "description": "将生成 Mock schema 存放本地",
+          "order": 30
+        },
+        "yapi.mock.directory": {
+          "type": "string",
+          "default": ".mock",
+          "description": "Mock schema 存放目录"
+        },
+        "yapi.mock.openTheFileAfterTheBuild": {
+          "type": "boolean",
+          "default": true,
+          "description": "生成成功后打开 Mock schema 文件",
+          "order": 31
+        },
+        "yapi.mock.localStorageProcessing": {
+          "type": "string",
+          "default": "confirm",
+          "enum": [
+            "confirm",
+            "override",
+            "open"
+          ],
+          "enumDescriptions": [
+            "弹窗进行提示",
+            "覆盖现有文件",
+            "打开现有文件"
+          ],
+          "description": "本地已存在 Mock schema 时处理方式",
+          "order": 32
+        },
+        "yapi.mock.port": {
+          "type": "integer",
+          "default": 9000,
+          "minimum": 100,
+          "maximum": 65535,
+          "description": "Mock 端口",
+          "order": 1
+        },
+        "yapi.clearlog": {
+          "type": "boolean",
+          "default": true,
+          "description": "查看 Api 时清除历史记录"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "yapi.cmd.refresh",
+        "title": "刷新",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "yapi.cmd.search",
+        "title": "搜索",
+        "icon": "$(search)"
+      },
+      {
+        "command": "yapi.cmd.generate-mock-data",
+        "title": "生成 Mock 数据",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "yapi.cmd.generate-mock-schema",
+        "title": "生成 Mock schema",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "yapi.cmd.generate-api-code",
+        "title": "生成 Api 代码",
+        "icon": "$(server-process)"
+      },
+      {
+        "command": "yapi.cmd.generate-api-code-batch",
+        "title": "批量生成 Api 代码",
+        "icon": "$(server-process)"
+      },
+      {
+        "command": "yapi.cmd.create-mock-server",
+        "title": "创建 Mock server",
+        "icon": "$(server-process)"
+      },
+      {
+        "command": "yapi.cmd.stop-mock-server",
+        "title": "停用当前服务"
+      },
+      {
+        "command": "yapi.cmd.query-log",
+        "title": "查看日志"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "yapi.cmd.refresh",
+          "when": "false"
+        },
+        {
+          "command": "yapi.cmd.search",
+          "when": "false"
+        },
+        {
+          "command": "yapi.cmd.generate-mock-data",
+          "when": "false"
+        },
+        {
+          "command": "yapi.cmd.generate-mock-schema",
+          "when": "false"
+        },
+        {
+          "command": "yapi.cmd.generate-api-code",
+          "when": "false"
+        },
+        {
+          "command": "yapi.cmd.generate-api-code-batch",
+          "when": "false"
+        },
+        {
+          "command": "yapi.cmd.create-mock-server",
+          "when": "false"
+        },
+        {
+          "command": "yapi.cmd.stop-mock-server",
+          "when": "false"
+        },
+        {
+          "command": "yapi.cmd.query-log",
+          "when": "false"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "yapi.cmd.refresh",
+          "when": "view == yapi-view.api-list",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "yapi.cmd.generate-mock-data",
+          "when": "view == yapi-view.api-list && viewItem == 'interface'",
+          "group": "navigation@1"
+        },
+        {
+          "command": "yapi.cmd.generate-mock-schema",
+          "when": "view == yapi-view.api-list && viewItem == 'interface'",
+          "group": "navigation@20"
+        },
+        {
+          "command": "yapi.cmd.generate-api-code",
+          "when": "view == yapi-view.api-list && viewItem == 'interface'",
+          "group": "navigation@50"
+        },
+        {
+          "command": "yapi.cmd.generate-api-code-batch",
+          "when": "view == yapi-view.api-list && viewItem == 'project_cat'",
+          "group": "navigation@1"
+        },
+        {
+          "command": "yapi.cmd.create-mock-server",
+          "when": "view == yapi-view.api-list && viewItem == 'project'",
+          "group": "navigation@1"
+        },
+        {
+          "command": "yapi.cmd.stop-mock-server",
+          "when": "view == yapi-view.mock-server && viewItem == 'mock-server'",
+          "group": "navigation@1"
+        },
+        {
+          "command": "yapi.cmd.query-log",
+          "when": "view == yapi-view.api-list && (viewItem == 'group' || viewItem == 'project')",
+          "group": "navigation@1"
+        },
+        {
+          "command": "yapi.cmd.search",
+          "when": "view == yapi-view.api-list && viewItem == 'project'",
+          "group": "inline"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "yapi-view",
+          "title": "Yapi box",
+          "icon": "assets/icon128x128.png"
+        }
+      ]
+    },
+    "views": {
+      "yapi-view": [
+        {
+          "name": "YAPI 文档",
+          "id": "yapi-view.api-list",
+          "when": "yapi-view.api-list.show"
+        },
+        {
+          "name": "Mock 服务",
+          "id": "yapi-view.mock-server",
+          "when": "yapi-view.mock-server.show"
+        },
+        {
+          "name": "YAPI 动态",
+          "id": "yapi-view.log",
+          "when": "yapi-view.log.show"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "yapi-view.api-list",
+        "contents": "未配置 YApi 账户信息.\n[前往配置](command:workbench.action.openSettings2)"
+      },
+      {
+        "view": "yapi-view.mock",
+        "contents": "未启动 Mock 服务"
+      }
+    ],
+    "languages": [
+      {
+        "id": "yapi-output"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "yapi-output",
+        "scopeName": "source.yapi-output",
+        "path": "./syntaxes/yapi-output.tmLanguage.json"
+      }
+    ],
+    "colors": [
+      {
+        "id": "yapi.getTagColor",
+        "description": "Api Get 标签颜色",
+        "defaults": {
+          "dark": "#3fb950",
+          "light": "#1a7f37",
+          "highContrast": "#68ff79"
+        }
+      },
+      {
+        "id": "yapi.postTagColor",
+        "description": "Api Post 标签颜色",
+        "defaults": {
+          "dark": "#a371f7",
+          "light": "#8250df",
+          "highContrast": "#8945ff"
+        }
+      },
+      {
+        "id": "yapi.deleteTagColor",
+        "description": "Api Delete 标签颜色",
+        "defaults": {
+          "dark": "#f85149",
+          "light": "#cf222e",
+          "highContrast": "#ff544b"
+        }
+      },
+      {
+        "id": "yapi.putTagColor",
+        "description": "Api Put 标签颜色",
+        "defaults": {
+          "light": "#4d89e4",
+          "highContrastLight": "#797fd2",
+          "dark": "#9786e4",
+          "highContrast": "#897aeb"
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "yarn run compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/mockjs": "^1.0.7",
+    "@types/node": "16.x",
+    "@types/pug": "^2.0.6",
+    "@types/vscode": "^1.73.1",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
+    "@vscode/test-electron": "^2.3.0",
+    "eslint": "^8.36.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "json5": "^2.2.3",
+    "jsondiffpatch": "^0.4.1",
+    "mockjs": "^1.1.0",
+    "pug": "^3.0.2"
+  }
+}
