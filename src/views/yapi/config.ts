@@ -20,17 +20,26 @@ const defConfig = <IYapiConfig>{
         let params = ''; // api 方法参数
         let paramsData = '';// api 参数拼接
         if (method === 'get') {
-            params = `${reqQueryType ? `params:${reqQueryTypeName},` : ''}${reqBodyType ? `data:${reqBodyTypeName}` : ''}`;
-            paramsData = `, { ${reqQueryType ? 'params,' : ''}${reqBodyType ? 'data' : ''} }`;
+            params = `${reqQueryType ? `params: ${reqQueryTypeName},` : ''}${reqBodyType ? `d ata: ${reqBodyTypeName},` : ''}`;
+            paramsData = `, { ${reqQueryType ? 'params,' : ''}${reqBodyType ? ' data' : ''} }`;
         } else if (method === 'post') {
-            params = `${reqQueryType ? `params:${reqQueryTypeName},` : ''}${reqBodyType ? `data:${reqBodyTypeName}` : ''}`;
-            paramsData = `,${reqBodyType ? 'data' : 'undefined'},{${reqQueryType ? 'params' : ''}}`;
+            params = `${reqQueryType ? `params: ${reqQueryTypeName},` : ''}${reqBodyType ? ` data: ${reqBodyTypeName},` : ''}`;
+            paramsData = `, ${reqBodyType ? 'data' : 'undefined'}, {${reqQueryType ? ' params ' : ''}}`;
         }
+
+        const reg = /({.*?})/g;
+        if (reg.test(apiPath)) {
+            apiPath = apiPath.replace(reg, (str) => {
+                params += `${str.replace(/^{|}$/g, '')}: string,`;
+                return "$" + str;
+            });
+        }
+        params = params.replace(/,$/g, '');
 
         return `
 ${comment}
 export const ${fnName} = (${params}) => {
-  return request.${method}<any, API<${resBodyTypeName}>>('${apiPath}'${paramsData})
+  return request.${method}<any, API<${resBodyTypeName}>>(\`${apiPath}\`${paramsData})
 }
 `;
     },
