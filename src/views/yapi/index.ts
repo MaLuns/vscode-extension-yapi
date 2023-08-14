@@ -263,6 +263,12 @@ export class YapiTree extends BaseTree<YapiModel, YapiItem> {
                 printData(res.req_query);
             }
 
+            // 输出参数格式 包含 数组-对象 描述信息
+            const printBody = (body: any) => {
+                const data = schema2Json(parse(body), false, true);
+                Output.appendLine(JSON.stringify(data, null, 2).replace(/"\/\/(":)?(\s+")?(.*)"(,?)/g, '/* $3 */'));
+            };
+
             if (res.req_body_type === 'form') {
                 if (res.req_body_form && res.req_body_form.length) {
                     Output.appendLine(`\n--- Body-${res.req_body_type} ---\n`);
@@ -271,9 +277,8 @@ export class YapiTree extends BaseTree<YapiModel, YapiItem> {
             } else if (res.req_body_type === 'json') {
                 if (res.req_body_other && res.req_body_is_json_schema) {
                     try {
-                        const data = schema2Json(parse(res.req_body_other));
                         Output.appendLine(`\n--- Body-${res.req_body_type} ---\n`);
-                        Output.appendLine(JSON.stringify(data, null, 2));
+                        printBody(res.req_body_other);
                     } catch (error) {
                         console.log(error);
 
@@ -293,8 +298,7 @@ export class YapiTree extends BaseTree<YapiModel, YapiItem> {
             Output.appendLine('>>> 响应数据\n');
             if (res.res_body_type === 'json' && res.res_body_is_json_schema) {
                 try {
-                    const data = schema2Json(parse(res.res_body), false, true);
-                    Output.appendLine(JSON.stringify(data, null, 2).replace(/"\/\/(.*)"(,?)/g, '/* $1 */'));
+                    printBody(res.res_body);
                 } catch (error) {
                     console.log(error);
                 }

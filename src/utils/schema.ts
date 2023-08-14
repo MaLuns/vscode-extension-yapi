@@ -20,15 +20,6 @@ const enum YapiDataType {
     Long = 'long'
 }
 
-const YapiTypeMapBasicTsType = {
-    [YapiDataType.Boolean]: 'boolean',
-    [YapiDataType.Integer]: 'number',
-    [YapiDataType.Null]: 'null',
-    [YapiDataType.Number]: 'number',
-    [YapiDataType.String]: 'string',
-    [YapiDataType.Long]: 'string | number'
-};
-
 const isBasicType = (type: `${YapiDataType}`) => {
     const basicTypeList: string[] = [
         YapiDataType.Boolean,
@@ -67,25 +58,27 @@ export const schema2Json = (schema: any, isOnlyType = false, isComment = false) 
                 let res: { [k: string]: any; } = {};
                 rows.forEach(item => {
                     if (item.type) {
-                        if (isBasicType(item.type)) {
-                            // basic type
+                        if (isBasicType(item.type)) { // basic type
                             res[item.name] = getkeyDesc(item, item.type, isOnlyType);
-                        } else if (item.type === 'object') {
-                            // object
+                        } else if (item.type === 'object') { // object
+                            res[item.name] = {};
+                            if (!isOnlyType && isComment) { // object 描述信息
+                                item.desc && (res[item.name]["//"] = item.desc);
+                            }
+
                             res[item.name] = {
+                                ...res[item.name],
                                 ...toJson(item.children)
                             };
                         } else if (Array.isArray(item.type)) { // fix: type 有可能存在多个类型
                             res[item.name] = getkeyDesc(item, item.type.join('|'), isOnlyType);
                         } else {
                             // Array
-                            if (isBasicType(item.sub.itemType)) {
-                                // Array 子类为基础类型
+                            if (isBasicType(item.sub.itemType)) { // Array 子类为基础类型
                                 res[item.name] = [getkeyDesc(item, item.sub.itemType, isOnlyType)];
-                            } else if (item.sub.itemType) {
-                                // Array 子类为对象
+                            } else if (item.sub.itemType) { // Array 子类为对象
                                 res[item.name] = [];
-                                if (!isOnlyType && isComment) {
+                                if (!isOnlyType && isComment) { // Array 描述信息
                                     const desc = getkeyDesc(item, undefined, isOnlyType);
                                     desc && res[item.name].push('//' + desc);
                                 }

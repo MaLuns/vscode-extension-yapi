@@ -2,6 +2,10 @@
 
 Yapi 接口文档工具，提升开发效率
 
+## 快速上手
+
+打开 vscode => Settings => #xtensions => Yapi box => 配置 Yapi 服务地址、账号、密码既可使用
+
 ### 自定义生成规则
 
 在项目根目录添加 `yapi.config.js` 文件，实现 IYapiConfig 方法即可
@@ -110,6 +114,11 @@ interface IGenRequest {
 ```
 
 ## 更新发布
+
+### 0.0.2
+
+- 支持 yapi url 动态参数拼接
+- 显示出入参 数组和对象 备注信息
 
 ### 0.0.1
 

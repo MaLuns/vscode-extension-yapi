@@ -6,7 +6,7 @@
     "name": "白云苍狗"
   },
   "description": "Yapi 工具箱",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "url": "https://github.com/maluns/vscode-extension-yapi.git",
     "type": "git"
@@ -24,7 +24,7 @@
   "icon": "assets/icon128x128.png",
   "contributes": {
     "configuration": {
-      "title": "Yapx box",
+      "title": "Yapi box",
       "properties": {
         "yapi.baseurl": {
           "type": "string",
