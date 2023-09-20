@@ -96,24 +96,28 @@ interface IGenRequest {
 示例
 
 ```js
-{
-    responseKey: 'all',
-    genRequest(){
-        // do something
-    },
-    formatInterfaceComment(){
-        // do something
-    },
-    formatApiComment(){
-        // do something
-    },
-    genCode(){
-        // do something
-    },
-}
+module.exports = {
+  responseKey: "all",
+  genRequest() {
+    // do something
+  },
+  formatInterfaceComment() {
+    // do something
+  },
+  formatApiComment() {
+    // do something
+  },
+  genCode() {
+    // do something
+  },
+};
 ```
 
 ## 更新发布
+
+### 0.0.3
+
+- 修复 yapi.config.js 读取异常
 
 ### 0.0.2
 

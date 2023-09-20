@@ -465,7 +465,9 @@ export class YapiTree extends BaseTree<YapiModel, YapiItem> {
 
             const status = res.filter(item => item.status === 'fulfilled');
             window.showInformationMessage(`创建成功${status.length}条, 失败${res.length - status.length}条`);
-
+            if (!ts) {
+                codes.pop();
+            }
             for (let index = 0; index < codes.length; index++) {
                 workspace.openTextDocument({
                     language: ts ? 'typescript' : 'javascript',

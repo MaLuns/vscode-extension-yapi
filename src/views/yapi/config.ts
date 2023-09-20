@@ -84,7 +84,7 @@ export const getUserYapiConfig = async (): Promise<IYapiConfig> => {
         if (files.length > 0) {
             return workspace.fs.readFile(files[0]).then((res) => {
                 try {
-                    let config: IYapiConfig | undefined = new Function(res.toString())()?.();
+                    let config: IYapiConfig | undefined = new Function(res.toString().replace(`module.exports`, '').trim().replace('=', 'return '))();
                     _cache = config || defConfig;
                     return _cache;
                 } catch (error) {
